@@ -9,10 +9,12 @@ All notable changes to this project will be documented in this file.
 
 - Bump com.diffplug.spotless:spotless-maven-plugin *(deps-dev)* — [@dependabot[bot]](https://github.com/dependabot[bot])
 
+- Deps(template)(deps-dev): Bump the junit5 group across 1 directory with 2 updates — [@dependabot[bot]](https://github.com/dependabot[bot])
+
 
 ###  New Contributors
 
-- @nil-malh made their first contribution in [#5](https://github.com/ktestify/ktestify-plugin-archetype/pull/5)
+- @nil-malh made their first contribution in [#4](https://github.com/ktestify/ktestify-plugin-archetype/pull/4)
 
 
 
