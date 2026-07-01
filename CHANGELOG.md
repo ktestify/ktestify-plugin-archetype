@@ -13,10 +13,12 @@ All notable changes to this project will be documented in this file.
 
 - Bump maven.archetype.plugin.version from 3.4.0 to 3.4.1 *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
 
+- Deps(template)(deps): Bump the cucumber group across 1 directory with 2 updates — [@dependabot[bot]](https://github.com/dependabot[bot])
+
 
 ###  New Contributors
 
-- @nil-malh made their first contribution in [#3](https://github.com/ktestify/ktestify-plugin-archetype/pull/3)
+- @nil-malh made their first contribution in [#2](https://github.com/ktestify/ktestify-plugin-archetype/pull/2)
 
 
 
