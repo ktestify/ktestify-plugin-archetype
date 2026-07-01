@@ -11,10 +11,12 @@ All notable changes to this project will be documented in this file.
 
 - Deps(template)(deps-dev): Bump the junit5 group across 1 directory with 2 updates — [@dependabot[bot]](https://github.com/dependabot[bot])
 
+- Bump maven.archetype.plugin.version from 3.4.0 to 3.4.1 *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
+
 
 ###  New Contributors
 
-- @nil-malh made their first contribution in [#4](https://github.com/ktestify/ktestify-plugin-archetype/pull/4)
+- @nil-malh made their first contribution in [#1](https://github.com/ktestify/ktestify-plugin-archetype/pull/1)
 
 
 
