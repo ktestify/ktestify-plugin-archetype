@@ -2,7 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.0.0] — 2026-07-01
+
 ### ⬆️ Dependency Updates
 
 - Deps(template)(deps-dev): Bump com.diffplug.spotless:spotless-maven-plugin — [@dependabot[bot]](https://github.com/dependabot[bot])
@@ -18,8 +19,8 @@ All notable changes to this project will be documented in this file.
 
 ###  New Contributors
 
-- @nil-malh made their first contribution in [#2](https://github.com/ktestify/ktestify-plugin-archetype/pull/2)
 
+- @nil-malh made their first contribution in [#2](https://github.com/ktestify/ktestify-plugin-archetype/pull/2)
 
 
 
