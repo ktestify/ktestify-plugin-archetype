@@ -7,10 +7,12 @@ All notable changes to this project will be documented in this file.
 
 - Deps(template)(deps-dev): Bump com.diffplug.spotless:spotless-maven-plugin — [@dependabot[bot]](https://github.com/dependabot[bot])
 
+- Bump com.diffplug.spotless:spotless-maven-plugin *(deps-dev)* — [@dependabot[bot]](https://github.com/dependabot[bot])
+
 
 ###  New Contributors
 
-- @nil-malh made their first contribution in [#6](https://github.com/ktestify/ktestify-plugin-archetype/pull/6)
+- @nil-malh made their first contribution in [#5](https://github.com/ktestify/ktestify-plugin-archetype/pull/5)
 
 
 
