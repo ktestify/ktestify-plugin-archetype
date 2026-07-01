@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor
+    xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.1.0 https://maven.apache.org/xsd/archetype-descriptor-1.1.0.xsd"
+    name="ktestify-plugin-archetype">
+
+    <!--
+        Required properties — the user is prompted for each when running
+        mvn archetype:generate.  Defaults are provided so that pressing Enter
+        accepts the suggested value.
+    -->
+    <requiredProperties>
+
+        <!-- Short name in lowercase, used for variable names and log file names.
+             Example: s3, ibmmq, sftp -->
+        <requiredProperty key="pluginShortName">
+            <defaultValue>myplugin</defaultValue>
+        </requiredProperty>
+
+        <!-- Kebab-case plugin ID, used in HOCON config paths and log messages.
+             Example: s3, ibm-mq, sftp -->
+        <requiredProperty key="pluginKebabId">
+            <defaultValue>my-plugin</defaultValue>
+        </requiredProperty>
+
+        <!-- PascalCase name, used for Java class names.
+             Example: S3, IbmMq, Sftp -->
+        <requiredProperty key="pluginPascalName">
+            <defaultValue>MyPlugin</defaultValue>
+        </requiredProperty>
+
+        <!-- Author display name, shown in the startup banner and POM metadata. -->
+        <requiredProperty key="authorName">
+            <defaultValue>Your Name</defaultValue>
+        </requiredProperty>
+
+        <!-- Author contact email, shown in the startup banner and POM metadata. -->
+        <requiredProperty key="authorEmail">
+            <defaultValue>your.email@example.com</defaultValue>
+        </requiredProperty>
+
+        <!-- GitHub username or organisation that owns the generated repository. -->
+        <requiredProperty key="githubOrg">
+            <defaultValue>your-github-username</defaultValue>
+        </requiredProperty>
+
+        <!-- GitHub repository name for the generated plugin project. -->
+        <requiredProperty key="githubRepoName">
+            <defaultValue>ktestify-plugin-myplugin</defaultValue>
+        </requiredProperty>
+
+    </requiredProperties>
+
+    <!--
+        File sets — each entry maps a directory inside archetype-resources/
+        to the generated project.  When filtered=true, both file content and
+        file names are processed by Velocity.  When packaged=true, the base
+        package path is prepended to the directory.
+    -->
+    <fileSets>
+
+        <!-- Java main sources — filtered + packaged -->
+        <fileSet filtered="true" packaged="true">
+            <directory>src/main/java</directory>
+        </fileSet>
+
+        <!-- Java test sources — filtered + packaged -->
+        <fileSet filtered="true" packaged="true">
+            <directory>src/test/java</directory>
+        </fileSet>
+
+        <!-- Resource files (reference.conf, log4j2, SPI descriptor) — filtered -->
+        <fileSet filtered="true">
+            <directory>src/main/resources</directory>
+        </fileSet>
+
+        <!-- Spotless license header — filtered (author name) -->
+        <fileSet filtered="true">
+            <directory>.spotless</directory>
+        </fileSet>
+
+        <!-- Root files that need property substitution -->
+        <fileSet filtered="true">
+            <directory></directory>
+            <includes>
+                <include>pom.xml</include>
+                <include>README.md</include>
+                <include>cliff.toml</include>
+            </includes>
+        </fileSet>
+
+        <!-- Root files that do NOT need filtering -->
+        <fileSet filtered="false">
+            <directory></directory>
+            <includes>
+                <include>.gitignore</include>
+                <include>LICENSE</include>
+            </includes>
+        </fileSet>
+
+    </fileSets>
+
+</archetype-descriptor>
+
