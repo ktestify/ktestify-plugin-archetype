@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ###  New Contributors
 
-- @nil-malh made their first contribution in [#1](https://github.com/ktestify/ktestify-plugin-archetype/pull/1)
+- @nil-malh made their first contribution in [#3](https://github.com/ktestify/ktestify-plugin-archetype/pull/3)
 
 
 
