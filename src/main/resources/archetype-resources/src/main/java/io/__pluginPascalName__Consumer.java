@@ -78,7 +78,7 @@ public class ${pluginPascalName}Consumer extends AbstractConsumer {
 
         } catch (FetchException e) {
             throw new ConsumerException("${pluginPascalName} fetch failed for record '" + context.getRecordId()
-                    + "' in resource '" + context.getResourceName() + "': " + e.getMessage());
+                    + "' in resource '" + context.getResourceName() + "': " + e.getMessage(), e);
         } finally {
             fetcher.close();
         }
@@ -93,4 +93,5 @@ public class ${pluginPascalName}Consumer extends AbstractConsumer {
                 .build();
     }
 }
+
 

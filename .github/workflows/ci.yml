@@ -1,17 +1,3 @@
-# ============================================================
-# CI — Continuous Integration
-#
-# Triggered on:
-#   • push  → main      (every merge — post-merge validation)
-#   • pull_request → main (every PR — pre-merge validation)
-#
-# Two independent jobs run in parallel:
-#   lint   → Spotless code-style check
-#   build  → Compile + archetype integration test
-#
-# A synthetic `ci-success` job aggregates the two results so
-# branch-protection rules only need to track one required check.
-# ============================================================
 name: CI
 
 on:
@@ -31,68 +17,50 @@ on:
       - ".github/ISSUE_TEMPLATE/**"
       - ".github/pull_request_template.md"
       - ".github/SECURITY.md"
+  workflow_dispatch:
+    inputs:
+      run-integration-tests:
+        description: "Run integration tests (manual opt-in, useful for PR branches)"
+        type: boolean
+        default: false
 
-# Cancel in-progress runs for the same branch/PR (keep only the latest)
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
-env:
-  JAVA_VERSION: "25"
-  MAVEN_OPTS: >-
-    -Xmx2048m
-    -XX:+EnableDynamicAgentLoading
-
 permissions:
   contents: read
 
-# ──────────────────────────────────────────────────────────────
 jobs:
+  ci:
+    name: Maven CI
+    uses: ktestify/.github/.github/workflows/reusable-maven-ci.yml@main
+    with:
+      java-version: "25"
+      run-integration-tests: ${{ github.event_name == 'workflow_dispatch' && inputs.run-integration-tests || false }}
+      maven-opts: ""
 
-  # ── 1. Code Style ─────────────────────────────────────────
-  lint:
-    name: 🎨 Code Style (Spotless)
+  archetype-smoke:
+    name: Archetype Smoke Test
     runs-on: ubuntu-latest
+    needs: [ ci ]
     permissions:
       contents: read
-
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Set up Java ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v5
+      - name: Set up Java 25
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: ${{ env.JAVA_VERSION }}
+          java-version: "25"
           cache: maven
 
-      - name: Spotless — check formatting
-        run: mvn spotless:check --no-transfer-progress
-
-  # ── 2. Build & Archetype Integration Test ────────────────
-  build:
-    name: 🔨 Build & Archetype Test
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Set up Java ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: ${{ env.JAVA_VERSION }}
-          cache: maven
-
-      - name: Build & install archetype
+      - name: Build and install archetype
         run: mvn clean install --no-transfer-progress -Dspotless.check.skip=true
 
-      - name: Generate a test project from the archetype
+      - name: Generate project from archetype
         run: |
           mkdir -p /tmp/archetype-test
           cd /tmp/archetype-test
@@ -103,7 +71,7 @@ jobs:
             -Dpackage=com.example.testplugin \
             -DarchetypeGroupId=io.github.ktestify \
             -DarchetypeArtifactId=ktestify-plugin-archetype \
-            -DarchetypeVersion=${{ github.event.repository.default_branch == 'main' && '1.0-SNAPSHOT' || '1.0-SNAPSHOT' }} \
+            -DarchetypeVersion=1.0-SNAPSHOT \
             -DpluginShortName=testplugin \
             -DpluginKebabId=test-plugin \
             -DpluginPascalName=TestPlugin \
@@ -115,29 +83,10 @@ jobs:
             -DinteractiveMode=false \
             --no-transfer-progress
 
-      - name: Compile the generated project
+      - name: Compile generated project
         run: |
           cd /tmp/archetype-test/test-plugin
           mvn compile --no-transfer-progress -Dspotless.check.skip=true
 
-  # ── 3. Aggregate status (single required check) ───────────
-  ci-success:
-    name: ✅ CI passed
-    runs-on: ubuntu-latest
-    needs: [ lint, build ]
-    if: always()
-    permissions:
-      contents: read
-    steps:
-      - name: Evaluate results
-        run: |
-          lint="${{ needs.lint.result }}"
-          build="${{ needs.build.result }}"
-          echo "lint  → $lint"
-          echo "build → $build"
-          if [[ "$lint" != "success" || "$build" != "success" ]]; then
-            echo "❌ One or more jobs failed."
-            exit 1
-          fi
-          echo "✅ All CI jobs passed."
+
 

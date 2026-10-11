@@ -115,12 +115,26 @@ public class ${pluginPascalName}ValidationService {
             throw new ConsumerException("Outer timeout exceeded after " + effectiveMs + "ms.");
         } catch (ExecutionException e) {
             Throwable cause = e.getCause();
-            if (cause instanceof ConsumerException ce) throw ce;
-            throw new ConsumerException("${pluginPascalName} consumer execution failed: " + cause.getMessage());
+            AssertionError assertion = findCause(cause, AssertionError.class);
+            if (assertion != null) throw assertion;
+
+            ConsumerException consumerException = findCause(cause, ConsumerException.class);
+            if (consumerException != null) throw consumerException;
+
+            throw new ConsumerException("${pluginPascalName} consumer execution failed: " + cause.getMessage(), cause);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new ConsumerException("${pluginPascalName} consumer thread interrupted.");
         }
+    }
+
+    private static <T extends Throwable> T findCause(Throwable throwable, Class<T> type) {
+        Throwable current = throwable;
+        while (current != null) {
+            if (type.isInstance(current)) return type.cast(current);
+            current = current.getCause();
+        }
+        return null;
     }
 
     private static String getString(Map<String, String> row, String col) {
@@ -153,4 +167,5 @@ public class ${pluginPascalName}ValidationService {
         return java.nio.file.Path.of(assetsDir, path).toString();
     }
 }
+
 
